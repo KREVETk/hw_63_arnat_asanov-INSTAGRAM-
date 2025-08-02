@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}Forum{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #eee;">
+    <nav style="flex: 1;">
+      <a href="{% url 'topics:list' %}" style="margin-right: 15px;">Главная</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'topics:create' %}">Создать Тему</a>
+      {% endif %}
+    </nav>
+
+    <div style="flex: 1; text-align: center;">
+      <form method="get" action="{% url 'topics:list' %}">
+        <input type="text" name="q" placeholder="Поиск тем..." value="{{ request.GET.q|default:'' }}">
+        <button type="submit">Поиск</button>
+      </form>
+    </div>
+
+    <div style="flex: 1; text-align: right;">
+      {% if user.is_authenticated %}
+        <a href="{% url 'accounts:profile' %}">{{ user.username }}</a> |
+        <a href="{% url 'logout' %}">Выход</a>
+      {% else %}
+        <a href="{% url 'login' %}">Вход</a> |
+        <a href="{% url 'accounts:register' %}">Регистрация</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <main style="padding: 20px;">
+    <h1>{% block page_title %}Темы{% endblock %}</h1>
+
+    {% block content %}
+    {% endblock %}
+  </main>
+</body>
+</html>
