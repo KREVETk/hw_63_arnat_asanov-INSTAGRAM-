@@ -40,28 +40,48 @@ class ReplyForm:
     pass
 
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 class TopicDetailView(FormMixin, DetailView):
     model = Topic
     template_name = 'board/topic_detail.html'
     context_object_name = 'topic'
     form_class = ReplyForm
+    paginate_by = 8
 
     def get_success_url(self):
         return reverse('board:topic_detail', kwargs={'pk': self.object.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        replies_list = self.object.replies.all().order_by('created_at')
+        paginator = Paginator(replies_list, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            replies = paginator.page(page)
+        except PageNotAnInteger:
+            replies = paginator.page(1)
+        except EmptyPage:
+            replies = paginator.page(paginator.num_pages)
+
+        context['replies'] = replies
         context['form'] = self.get_form()
         return context
 
     def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+
         self.object = self.get_object()
         form = self.get_form()
+
         if form.is_valid():
             reply = form.save(commit=False)
             reply.author = request.user
             reply.topic = self.object
             reply.save()
             return redirect(self.get_success_url())
-        else:
-            return self.form_invalid(form)
+
+        return self.form_invalid(form)

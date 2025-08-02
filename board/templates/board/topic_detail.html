@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ topic.title }}</h1>
+  <p>
+    Автор: {{ topic.author.username }} |
+    Дата создания: {{ topic.created_at|date:"d.m.Y H:i" }} |
+    Ответов: {{ topic.reply_count }}
+  </p>
+
+  <hr>
+
+  <h2>Ответы</h2>
+  {% if replies %}
+    {% for reply in replies %}
+      <div style="border-bottom: 1px solid #ccc; padding: 10px 0;">
+        <strong>{{ reply.author.username }}</strong>
+        <span style="color: #777; font-size: 0.9em;">
+          — {{ reply.created_at|date:"d.m.Y H:i" }}
+        </span>
+        <p>{{ reply.content|linebreaks }}</p>
+      </div>
+    {% endfor %}
+
+    <div style="margin-top: 20px;">
+      {% if replies.has_previous %}
+        <a href="?page={{ replies.previous_page_number }}">← Предыдущая</a>
+      {% endif %}
+
+      <span>Страница {{ replies.number }} из {{ replies.paginator.num_pages }}</span>
+
+      {% if replies.has_next %}
+        <a href="?page={{ replies.next_page_number }}">Следующая →</a>
+      {% endif %}
+    </div>
+  {% else %}
+    <p>Ответов пока нет.</p>
+  {% endif %}
+
+  <hr>
+
+  <h2>Оставить ответ</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Отправить</button>
+  </form>
+
+{% endblock %}
