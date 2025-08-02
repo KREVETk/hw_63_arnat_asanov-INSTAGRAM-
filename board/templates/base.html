@@ -1,3 +1,6 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -23,11 +26,11 @@
 
     <div style="flex: 1; text-align: right;">
       {% if user.is_authenticated %}
-        <a href="{% url 'accounts:profile' %}">{{ user.username }}</a> |
+        <a href="{% url 'board:profile' %}">{{ user.username }}</a> |
         <a href="{% url 'logout' %}">Выход</a>
       {% else %}
         <a href="{% url 'login' %}">Вход</a> |
-        <a href="{% url 'accounts:register' %}">Регистрация</a>
+        <a href="{% url 'board:register' %}">Регистрация</a>
       {% endif %}
     </div>
   </header>
