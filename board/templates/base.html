@@ -11,14 +11,14 @@
 <body>
   <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #eee;">
     <nav style="flex: 1;">
-      <a href="{% url 'topics:list' %}" style="margin-right: 15px;">Главная</a>
+      <a href="{% url 'board:list' %}" style="margin-right: 15px;">Главная</a>
       {% if user.is_authenticated %}
-        <a href="{% url 'topics:create' %}">Создать Тему</a>
+        <a href="{% url 'board:create' %}">Создать Тему</a>
       {% endif %}
     </nav>
 
     <div style="flex: 1; text-align: center;">
-      <form method="get" action="{% url 'topics:list' %}">
+      <form method="get" action="{% url 'board:list' %}">
         <input type="text" name="q" placeholder="Поиск тем..." value="{{ request.GET.q|default:'' }}">
         <button type="submit">Поиск</button>
       </form>
@@ -27,9 +27,9 @@
     <div style="flex: 1; text-align: right;">
       {% if user.is_authenticated %}
         <a href="{% url 'board:profile' %}">{{ user.username }}</a> |
-        <a href="{% url 'logout' %}">Выход</a>
+        <a href="{% url 'board:logout' %}">Выход</a>
       {% else %}
-        <a href="{% url 'login' %}">Вход</a> |
+        <a href="{% url 'board:login' %}">Вход</a> |
         <a href="{% url 'board:register' %}">Регистрация</a>
       {% endif %}
     </div>
