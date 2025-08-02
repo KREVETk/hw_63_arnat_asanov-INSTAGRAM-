@@ -35,7 +35,7 @@ User = get_user_model()
 
 class Reply(models.Model):
     topic = models.ForeignKey('Topic', on_delete=models.CASCADE, related_name='replies')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='replies')
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 

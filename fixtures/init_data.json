@@ -1,0 +1,71 @@
+[
+{
+  "model": "board.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$DJ9txYFivAyFo0QdEzFgnw$x2Tu5g0RX59J5ZhkjdfWO9A9683sasZSTJ3rN+qiOtI=",
+    "last_login": "2025-08-02T11:54:37.383Z",
+    "is_superuser": false,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-02T11:51:15.209Z",
+    "avatar": "avatars/user_None/ava1.jpeg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "board.topic",
+  "pk": 1,
+  "fields": {
+    "title": "Технологии будущего: что нас ждёт через 10 лет?",
+    "content": "Обсуждение новейших трендов в IT, ИИ, робототехнике, космосе и гаджетах",
+    "author": 1,
+    "created_at": "2025-08-02T12:14:49.561Z"
+  }
+},
+{
+  "model": "board.topic",
+  "pk": 2,
+  "fields": {
+    "title": "Технологии будущего: что нас ждёт через 10 лет?",
+    "content": "Обсуждение новейших трендов в IT, ИИ, робототехнике, космосе и гаджетах",
+    "author": 1,
+    "created_at": "2025-08-02T12:18:30.568Z"
+  }
+},
+{
+  "model": "board.reply",
+  "pk": 1,
+  "fields": {
+    "topic": 2,
+    "author": 1,
+    "content": "Ответ1",
+    "created_at": "2025-08-02T12:52:01.590Z"
+  }
+},
+{
+  "model": "board.reply",
+  "pk": 2,
+  "fields": {
+    "topic": 2,
+    "author": 1,
+    "content": "Ответ2",
+    "created_at": "2025-08-02T12:52:08.298Z"
+  }
+},
+{
+  "model": "board.reply",
+  "pk": 3,
+  "fields": {
+    "topic": 2,
+    "author": 1,
+    "content": "Ответ3",
+    "created_at": "2025-08-02T12:52:15.993Z"
+  }
+}
+]
