@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Темы{% endblock %}
+
+{% block content %}
+  <h2>Темы</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Название</th>
+        <th>Автор</th>
+        <th>Дата создания</th>
+        <th>Ответы</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for topic in topics %}
+        <tr>
+          <td><a href="{% url 'topic_detail' topic.pk %}">{{ topic.title }}</a></td>
+          <td>
+            <a href="{% url 'user_profile' topic.author.pk %}">
+              {{ topic.author.username }}
+            </a>
+          </td>
+          <td>{{ topic.created_at|date:"d.m.Y H:i" }}</td>
+          <td>{{ topic.replies.count }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4">Тем пока нет.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">← Назад</a>
+    {% endif %}
+
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Вперёд →</a>
+    {% endif %}
+  </div>
+{% endblock %}
