@@ -6,7 +6,17 @@
   <h2>Регистрация</h2>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Зарегистрироваться</button>
+    {% for field in form %}
+      <div style="margin-bottom: 10px;">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+          <div style="color: #ff0000;">
+            {{ field.errors }}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit" style="font-weight: bold;">Зарегистрироваться</button>
   </form>
 {% endblock %}

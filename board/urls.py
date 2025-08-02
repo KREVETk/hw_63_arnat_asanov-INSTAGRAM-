@@ -1,7 +1,8 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-from board.views import TopicListView, TopicCreateView, TopicDetailView, RegisterView
+from board.views import (TopicListView, TopicCreateView, TopicDetailView,
+                         RegisterView, ProfileView)
 
 app_name = 'board'
 
@@ -12,4 +13,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='board:login'), name='logout'),
     path('topics/add/', TopicCreateView.as_view(), name='topic_create'),
     path('topics/<int:pk>/', TopicDetailView.as_view(), name='topic_detail'),
+    path('profile/', ProfileView.as_view(), name='profile')
 ]
