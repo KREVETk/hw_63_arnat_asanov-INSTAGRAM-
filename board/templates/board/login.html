@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 
+{% block title %}Вход{% endblock %}
+
 {% block content %}
-  <h2>Вход</h2>
-  <form method="post">
+<div class="container mt-4" style="max-width: 400px;">
+  <h2 class="mb-4 text-center">Вход</h2>
+
+  <form method="post" novalidate>
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Войти</button>
+    <button type="submit" class="btn btn-primary w-100">Войти</button>
   </form>
-  <a href="{% url 'board:register' %}" style="text-decoration: none; color: black; font-weight: bold;">Зарегистрироваться</a></p>
+
+  <p class="mt-3 text-center">
+    Нет аккаунта?
+    <a href="{% url 'board:register' %}" class="text-decoration-none fw-bold">Зарегистрироваться</a>
+  </p>
+</div>
 {% endblock %}

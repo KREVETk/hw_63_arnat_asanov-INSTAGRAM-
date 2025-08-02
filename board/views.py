@@ -5,7 +5,7 @@ from django.views.generic import CreateView, ListView, DetailView
 from django.views.generic.edit import FormMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from . import forms
+from django import forms
 from .forms.user import UserRegisterForm
 from .forms.topic_form import TopicForm
 from .models import Topic, Reply, User
@@ -33,7 +33,7 @@ class TopicCreateView(LoginRequiredMixin, CreateView):
     model = Topic
     form_class = TopicForm
     template_name = 'board/topic_form.html'
-    success_url = reverse_lazy('board:topic_list')
+    success_url = reverse_lazy('board:list')
 
     def form_valid(self, form):
         form.instance.author = self.request.user

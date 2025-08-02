@@ -1,45 +1,44 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <title>{% block title %}Forum{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-  <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #eee;">
-    <nav style="flex: 1;">
-      <a href="{% url 'board:list' %}" style="text-decoration: none; color: black; font-weight: bold; margin-right: 15px;">Главная</a>
-      {% if user.is_authenticated %}
-        <a href="{% url 'board:topic_create' %}">Создать Тему</a>
-      {% endif %}
-    </nav>
+  <header class="bg-light py-3 border-bottom">
+    <div class="container d-flex justify-content-between align-items-center">
+      <nav>
+        <a href="{% url 'board:list' %}" class="me-3 fw-bold text-dark text-decoration-none">Главная</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'board:topic_create' %}" class="fw-bold text-dark text-decoration-none">Создать Тему</a>
+        {% endif %}
+      </nav>
 
-    <div style="flex: 1; text-align: center;">
-      <form method="get" action="{% url 'board:list' %}">
-        <input type="text" name="q" placeholder="Поиск тем..." value="{{ request.GET.q|default:'' }}">
-        <button type="submit">Поиск</button>
+      <form method="get" action="{% url 'board:list' %}" class="d-flex">
+        <input type="text" name="q" class="form-control me-2" placeholder="Поиск тем..." value="{{ request.GET.q|default:'' }}">
+        <button type="submit" class="btn btn-outline-primary">Поиск</button>
       </form>
-    </div>
 
-    <div style="flex: 1; text-align: right;">
-      {% if user.is_authenticated %}
-        <a href="{% url 'board:profile' %}">{{ user.username }}</a> |
-        <a href="{% url 'board:logout' %}" style="text-decoration: none; color: black; font-weight: bold;">Выход</a>
-      {% else %}
-        <a href="{% url 'board:login' %}" style="text-decoration: none; color: black; font-weight: bold;">Вход</a> |
-        <a href="{% url 'board:register' %}" style="text-decoration: none; color: black; font-weight: bold;">Регистрация</a>
-      {% endif %}
+      <div>
+        {% if user.is_authenticated %}
+          <a href="{% url 'board:profile' %}" class="fw-bold text-dark text-decoration-none me-2">{{ user.username }}</a> |
+          <a href="{% url 'board:logout' %}" class="fw-bold text-dark text-decoration-none ms-2">Выход</a>
+        {% else %}
+          <a href="{% url 'board:login' %}" class="fw-bold text-dark text-decoration-none me-2">Вход</a> |
+          <a href="{% url 'board:register' %}" class="fw-bold text-dark text-decoration-none ms-2">Регистрация</a>
+        {% endif %}
+      </div>
     </div>
   </header>
-
-  <main style="padding: 20px;">
-    <h1>{% block page_title %}Темы{% endblock %}</h1>
 
     {% block content %}
     {% endblock %}
   </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

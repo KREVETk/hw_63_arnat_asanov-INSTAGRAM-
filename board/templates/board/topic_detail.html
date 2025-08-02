@@ -1,49 +1,82 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>{{ topic.title }}</h1>
-  <p>
-    Автор: {{ topic.author.username }} |
+<div class="container mt-4" style="max-width: 800px;">
+  <h1 class="mb-3">{{ topic.title }}</h1>
+  <p class="text-muted">
+    Автор: <strong>{{ topic.author.username }}</strong> |
     Дата создания: {{ topic.created_at|date:"d.m.Y H:i" }} |
     Ответов: {{ topic.reply_count }}
   </p>
 
   <hr>
 
-  <h2>Ответы</h2>
+  <h2 class="mb-3">Ответы</h2>
+
   {% if replies %}
     {% for reply in replies %}
-      <div style="border-bottom: 1px solid #ccc; padding: 10px 0;">
+      <div class="border-bottom py-3">
         <strong>{{ reply.author.username }}</strong>
-        <span style="color: #777; font-size: 0.9em;">
+        <span class="text-secondary small ms-2">
           — {{ reply.created_at|date:"d.m.Y H:i" }}
         </span>
-        <p>{{ reply.content|linebreaks }}</p>
+        <p class="mt-2">{{ reply.content|linebreaks }}</p>
       </div>
     {% endfor %}
 
-    <div style="margin-top: 20px;">
-      {% if replies.has_previous %}
-        <a href="?page={{ replies.previous_page_number }}">← Предыдущая</a>
-      {% endif %}
+    <nav aria-label="Навигация по ответам" class="mt-4">
+      <ul class="pagination justify-content-center">
+        {% if replies.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ replies.previous_page_number }}">← Предыдущая</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">← Предыдущая</span>
+          </li>
+        {% endif %}
 
-      <span>Страница {{ replies.number }} из {{ replies.paginator.num_pages }}</span>
+        <li class="page-item disabled">
+          <span class="page-link">
+            Страница {{ replies.number }} из {{ replies.paginator.num_pages }}
+          </span>
+        </li>
 
-      {% if replies.has_next %}
-        <a href="?page={{ replies.next_page_number }}">Следующая →</a>
-      {% endif %}
-    </div>
+        {% if replies.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ replies.next_page_number }}">Следующая →</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <span class="page-link">Следующая →</span>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+
   {% else %}
     <p>Ответов пока нет.</p>
   {% endif %}
 
   <hr>
 
-  <h2>Оставить ответ</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Отправить</button>
-  </form>
+  <h2 class="mb-3">Оставить ответ</h2>
 
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="mb-3">
+        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+          <div class="form-text">{{ field.help_text }}</div>
+        {% endif %}
+        {% for error in field.errors %}
+          <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Отправить</button>
+  </form>
+</div>
 {% endblock %}
