@@ -1,17 +1,31 @@
-from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
+from django.shortcuts import redirect
+from django.views.generic import RedirectView
 
-from board.views import (TopicListView, TopicCreateView, TopicDetailView,
-                         RegisterView, ProfileView)
+from board.views import (
+    RegisterView, CustomLoginView, CustomLogoutView,
+    ProfileUpdateView, UserDetailView,
+    PostCreateView, PostDetailView, UserListView, PostListView, ToggleLikeView, ToggleFollowView, UserSearchView
+)
+
 
 app_name = 'board'
 
 urlpatterns = [
-    path('', TopicListView.as_view(), name='list'),
+    path('', PostListView.as_view(), name='post_list'),
+    path('users/', UserListView.as_view(), name='user_list'),
+    path('users/search/', UserSearchView.as_view(), name='user_search'),
+    path('users/<str:username>/', UserDetailView.as_view(), name='user_detail'),
+    path('profile/edit/', ProfileUpdateView.as_view(), name='profile_edit'),
+    path('posts/add/', PostCreateView.as_view(), name='post_create'),
+    path('posts/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
+
     path('register/', RegisterView.as_view(), name='register'),
-    path('login/', LoginView.as_view(template_name='board/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(next_page='board:login'), name='logout'),
-    path('topics/add/', TopicCreateView.as_view(), name='topic_create'),
-    path('topics/<int:pk>/', TopicDetailView.as_view(), name='topic_detail'),
-    path('profile/', ProfileView.as_view(), name='profile')
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
+
+    path('post/<int:pk>/like/', ToggleLikeView.as_view(), name='post_like_toggle'),
+    path('user/<int:pk>/follow/', ToggleFollowView.as_view(), name='user_follow_toggle'),
+
+    path('accounts/login/', RedirectView.as_view(pattern_name='login', permanent=False))
 ]
