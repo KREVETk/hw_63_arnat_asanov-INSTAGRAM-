@@ -1,0 +1,112 @@
+[
+{
+  "model": "board.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$EJFO9v5l9sUEQWGfhWxbTk$GJjBH9UyokKZeRWqBcXkgkAONunGfoPIcTho2EkRcPg=",
+    "last_login": "2025-08-05T10:17:54.048Z",
+    "is_superuser": false,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-02T11:51:15.209Z",
+    "avatar": "avatars/user_None/ava1.jpeg",
+    "bio": "",
+    "phone_number": "",
+    "gender": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "board.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$cZVS3JRpERbORNEzedQTij$/hrsHze9TPunfHGyvkeaew/NxPO3Po0nJrpS2qjgwRk=",
+    "last_login": "2025-08-05T03:24:45.003Z",
+    "is_superuser": false,
+    "username": "minion",
+    "first_name": "minion",
+    "last_name": "",
+    "email": "asanovarnat2209@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-05T02:06:24.391Z",
+    "avatar": "avatars/user_minion/ava2.jpeg",
+    "bio": "banana bana na",
+    "phone_number": "bananana",
+    "gender": "male",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "board.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$UzQdHeg2ExfHhhiNQVBLwG$aGVzFVYBTnY38LB/ziwWZDlTKeS71+s6hVVHQRunmh8=",
+    "last_login": "2025-08-05T07:12:28.497Z",
+    "is_superuser": false,
+    "username": "user3",
+    "first_name": "user",
+    "last_name": "",
+    "email": "asanovarnat2209@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-05T07:12:20.660Z",
+    "avatar": "avatars/user_user3/ava3.jpeg",
+    "bio": "lorem ipsum dolor",
+    "phone_number": "bananana",
+    "gender": "female",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "board.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$htDI4angBzzCSzJm0YUGfY$gxeEsglgbJnRYgNFAS8tvewgbqqMgO3w4Y0786YdayU=",
+    "last_login": "2025-08-05T09:15:42.635Z",
+    "is_superuser": false,
+    "username": "example",
+    "first_name": "example",
+    "last_name": "",
+    "email": "example@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-05T09:15:29.151Z",
+    "avatar": "",
+    "bio": "",
+    "phone_number": "",
+    "gender": "male",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "board.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$U0M8jWTMN45fUw2fnRHCnc$r9cyyVWfkpuyAdyTWhrUXVcbpmGm9uX4xJnbNah57YY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "тщь",
+    "first_name": "джл",
+    "last_name": "",
+    "email": "test@email.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-05T10:17:17.532Z",
+    "avatar": "avatars/user_тщь/ava3.jpeg",
+    "bio": "дж",
+    "phone_number": "",
+    "gender": "male",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
