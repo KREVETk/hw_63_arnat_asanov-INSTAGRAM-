@@ -1,19 +1,13 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}Вход{% endblock %}
+{% block title %}Создать пост{% endblock %}
 
 {% block content %}
-<div class="container mt-4" style="max-width: 400px;">
-  <h2 class="mb-4 text-center">Вход</h2>
+<div class="container mt-4" style="max-width: 600px;">
+  <h2 class="mb-4 text-center">Создание поста</h2>
 
-  <form method="post" novalidate>
+  <form method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
-
-    {% if request.GET.next %}
-      <input type="hidden" name="next" value="{{ request.GET.next }}">
-    {% elif request.POST.next %}
-      <input type="hidden" name="next" value="{{ request.POST.next }}">
-    {% endif %}
 
     {% if form.non_field_errors %}
       <div class="alert alert-danger">
@@ -36,12 +30,11 @@
       </div>
     {% endfor %}
 
-    <button type="submit" class="btn btn-primary w-100">Войти</button>
+    <button type="submit" class="btn btn-success w-100">Отправить</button>
   </form>
 
-  <p class="mt-3 text-center">
-    Нет аккаунта?
-    <a href="{% url 'board:register' %}" class="text-decoration-none fw-bold">Зарегистрироваться</a>
-  </p>
+  <div class="text-center mt-3">
+    <a href="{% url 'board:post_list' %}" class="text-decoration-none btn btn-link">← Назад к публикации</a>
+  </div>
 </div>
 {% endblock %}
