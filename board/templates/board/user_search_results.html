@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Результаты поиска по запросу "{{ request.GET.q }}"</h2>
+
+  {% if users %}
+    <ul>
+      {% for user in users %}
+        <li>
+          <a href="{% url 'board:user_detail' user.username %}" class="fw-bold text-decoration-none text-black">
+            {% if user.avatar %}
+              <img src="{{ user.avatar.url }}" alt="Аватар" width="30" height="30">
+            {% endif %}
+            {{ user.username }} — {{ user.first_name }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    {% if is_paginated %}
+      <div>
+        {% if page_obj.has_previous %}
+          <a href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">← Назад</a>
+        {% endif %}
+        <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+          <a href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">Вперёд →</a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  {% else %}
+    <p>Пользователи не найдены.</p>
+  {% endif %}
+{% endblock %}
