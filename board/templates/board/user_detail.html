@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль {{ profile_user.username }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 950px;">
+
+  {% if request.GET.next %}
+    <a href="{{ request.GET.next }}" class="btn btn-secondary mb-3">← Назад</a>
+  {% endif %}
+
+  <h2 class="mb-4 text-center">
+    {% if is_own_profile %}
+      Личный кабинет
+    {% else %}
+      Профиль пользователя {{ profile_user.username }}
+    {% endif %}
+  </h2>
+
+  <div class="d-flex flex-column align-items-center mb-4 gap-3">
+    {% if profile_user.avatar %}
+      <img src="{{ profile_user.avatar.url }}" alt="Аватар" class="rounded-circle" width="100" height="100">
+    {% else %}
+      <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 100px; height: 100px;">
+        <span style="font-size: 2rem;">{{ profile_user.username|first|upper }}</span>
+      </div>
+    {% endif %}
+
+    <div class="d-flex justify-content-center gap-4 flex-wrap text-center">
+      <div><strong>Имя:</strong> {{ profile_user.username }}</div>
+      <div><strong>Постов:</strong> {{ posts_count }}</div>
+      <div><strong>Комментариев:</strong> {{ comments|length }}</div>
+      <div><strong>Подписчиков:</strong> {{ followers_count }}</div>
+      <div><strong>Подписок:</strong> {{ following_count }}</div>
+    </div>
+
+    {% if not is_own_profile and user.is_authenticated %}
+      <form action="{% url 'board:user_follow_toggle' profile_user.pk %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        {% if is_following %}
+          <button type="submit" class="btn btn-outline-danger btn-sm">Отписаться</button>
+        {% else %}
+          <button type="submit" class="btn btn-outline-primary btn-sm">Подписаться</button>
+        {% endif %}
+      </form>
+    {% endif %}
+
+    {% if is_own_profile %}
+      <div>
+        <a href="{% url 'board:profile_edit' %}" class="btn btn-outline-primary btn-sm">Редактировать профиль</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <h4 class="mb-3">Посты пользователя</h4>
+
+  {% if posts_paginator %}
+    <div class="row row-cols-3 g-3">
+      {% for post in posts_paginator %}
+        <div class="col" style="min-width: 280px;">
+          <a href="{% url 'board:post_detail' post.pk %}" class="d-block overflow-hidden rounded" style="aspect-ratio: 1 / 1; position: relative; width: 100%;">
+            {% if post.image %}
+              <img src="{{ post.image.url }}" alt="{{ post.description }}" class="w-100 h-100 object-fit-cover">
+            {% else %}
+              <div class="bg-secondary d-flex justify-content-center align-items-center text-white" style="height: 100%; font-weight: 700;">
+                Нет изображения
+              </div>
+            {% endif %}
+          </a>
+          <div class="mt-1 d-flex justify-content-between align-items-center">
+            <form action="{% url 'board:post_like_toggle' post.pk %}" method="post" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm {% if user in post.likes.all %}btn-danger{% else %}btn-outline-danger{% endif %}">
+                ❤️ {{ post.like_count }}
+              </button>
+            </form>
+            <small class="text-muted">{{ post.created_at|date:"d.m.Y" }}</small>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <nav aria-label="Пагинация постов" class="mt-4">
+      <ul class="pagination justify-content-center">
+        {% if posts_paginator.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ posts_paginator.previous_page_number }}">← Предыдущая</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">← Предыдущая</span></li>
+        {% endif %}
+
+        <li class="page-item disabled">
+          <span class="page-link">Страница {{ posts_paginator.number }} из {{ posts_paginator.paginator.num_pages }}</span>
+        </li>
+
+        {% if posts_paginator.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ posts_paginator.next_page_number }}">Следующая →</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">Следующая →</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% else %}
+    <p class="text-muted">Пока нет постов.</p>
+  {% endif %}
+</div>
+{% endblock %}
