@@ -8,11 +8,19 @@
 </div>
 
 <div class="container mt-4" style="max-width: 800px;">
-  <h1 class="mb-3">{{ post.description }}</h1>
+  <h1 class="mb-3">
+    {% if post.description|length > 200 %}
+      <span id="short-text">{{ post.description|slice:":200" }}...</span>
+      <span id="full-text" style="display:none;">{{ post.description }}</span>
+      <a href="#" id="toggle-text">Показать полностью</a>
+    {% else %}
+      {{ post.description }}
+    {% endif %}
+  </h1>
 
   {% if post.image %}
     <div class="mb-4 text-center">
-        <img src="{{ post.image.url }}" alt="Изображение поста" class="img-fluid rounded" style="width: 100%; height: auto; max-width: 800px;">
+      <img src="{{ post.image.url }}" alt="Изображение поста" class="img-fluid rounded" style="width: 100%; height: auto; max-width: 800px;">
     </div>
   {% endif %}
 
@@ -23,29 +31,27 @@
   </p>
 
   <div class="mb-3 d-flex align-items-center gap-3">
-    <form action="{% url 'board:post_like_toggle' post.pk %}" method="post" style="display:inline;">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-link p-0" style="font-size: 1.5rem; color: {% if user in post.likes.all %}red{% else %}gray{% endif %}; border: none; background: none;">
-        {% if user in post.likes.all %}
-          ❤️
-        {% else %}
-          🤍
-        {% endif %}
-        <span class="ms-1">{{ post.like_count }}</span>
-      </button>
-    </form>
-
-    {% if user.is_authenticated and user != post.author %}
-      <form action="{% url 'board:user_follow_toggle' post.author.pk %}" method="post" style="display:inline;">
+    {% if user.is_authenticated %}
+      <form action="{% url 'board:post_like_toggle' post.pk %}" method="post" style="display:inline;">
         {% csrf_token %}
-        {% with post.author as author %}
+        <button type="submit" class="btn btn-link p-0" style="font-size: 1.5rem; color: {% if user in post.likes.all %}red{% else %}gray{% endif %}; border: none; background: none;">
+          {% if user in post.likes.all %}❤️{% else %}🤍{% endif %}
+          <span class="ms-1">{{ post.like_count }}</span>
+        </button>
+      </form>
+
+      {% if user != post.author %}
+        <form action="{% url 'board:user_follow_toggle' post.author.pk %}" method="post" style="display:inline;">
+          {% csrf_token %}
           {% if is_following %}
             <button type="submit" class="btn btn-outline-danger btn-sm">Отписаться</button>
           {% else %}
             <button type="submit" class="btn btn-outline-primary btn-sm">Подписаться</button>
           {% endif %}
-        {% endwith %}
-      </form>
+        </form>
+      {% endif %}
+    {% else %}
+      <span class="text-danger fs-5">❤️ {{ post.like_count }}</span>
     {% endif %}
   </div>
 
@@ -137,4 +143,27 @@
     </div>
   {% endif %}
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleLink = document.getElementById('toggle-text');
+    if (toggleLink) {
+      toggleLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const shortText = document.getElementById('short-text');
+        const fullText = document.getElementById('full-text');
+        if (shortText.style.display !== 'none') {
+          shortText.style.display = 'none';
+          fullText.style.display = 'inline';
+          toggleLink.textContent = 'Скрыть';
+        } else {
+          shortText.style.display = 'inline';
+          fullText.style.display = 'none';
+          toggleLink.textContent = 'Показать полностью';
+        }
+      });
+    }
+  });
+</script>
 {% endblock %}
+
